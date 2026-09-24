@@ -33,12 +33,15 @@ import {
   Calendar,
   User,
   Shirt,
+  Home,
+  Camera,
+  Zap,
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 
 export function App() {
   const [activeSection, setActiveSection] = useState('hero');
-  const [mobileViewTab, setMobileViewTab] = useState<'model' | 'wardrobe'>('model');
+  const [studioLayoutMode, setStudioLayoutMode] = useState<'split' | 'fullscreen_model' | 'wardrobe_only'>('split');
   const [gender, setGender] = useState<'male' | 'female'>('male');
 
   // Default initial outfit: Iconic Gen Z Vietnamese Heritage outfit
@@ -238,37 +241,52 @@ export function App() {
           )}
         </div>
 
-        {/* Mobile / Tablet Segmented Controller (< lg) */}
-        <div className="lg:hidden mb-4 p-1.5 rounded-2xl glass-panel border border-[#cba135]/35 flex items-center justify-center gap-2 sticky top-16 sm:top-20 z-30 shadow-2xl backdrop-blur-xl">
+        {/* Mobile / Tablet Studio Mode Controller (< lg) */}
+        <div className="lg:hidden mb-4 p-1 rounded-2xl glass-panel border border-[#cba135]/35 flex items-center justify-between gap-1 sticky top-16 sm:top-20 z-30 shadow-2xl backdrop-blur-xl">
           <button
-            onClick={() => setMobileViewTab('model')}
-            className={`flex-1 py-2.5 rounded-xl text-xs font-bold flex items-center justify-center gap-2 transition-all active:scale-95 ${
-              mobileViewTab === 'model'
+            onClick={() => setStudioLayoutMode('split')}
+            className={`flex-1 py-2 rounded-xl text-[11px] sm:text-xs font-bold flex items-center justify-center gap-1.5 transition-all active:scale-95 ${
+              studioLayoutMode === 'split'
                 ? 'bg-[#cba135] text-black shadow-glow-gold'
                 : 'text-stone-300 hover:text-white bg-white/5'
             }`}
           >
-            <User className="w-4 h-4" />
-            <span>1. Người Mẫu 2D</span>
+            <Zap className="w-3.5 h-3.5" />
+            <span>Thử Đồ Trực Tiếp</span>
           </button>
           <button
-            onClick={() => setMobileViewTab('wardrobe')}
-            className={`flex-1 py-2.5 rounded-xl text-xs font-bold flex items-center justify-center gap-2 transition-all active:scale-95 ${
-              mobileViewTab === 'wardrobe'
+            onClick={() => setStudioLayoutMode('fullscreen_model')}
+            className={`flex-1 py-2 rounded-xl text-[11px] sm:text-xs font-bold flex items-center justify-center gap-1.5 transition-all active:scale-95 ${
+              studioLayoutMode === 'fullscreen_model'
                 ? 'bg-[#cba135] text-black shadow-glow-gold'
                 : 'text-stone-300 hover:text-white bg-white/5'
             }`}
           >
-            <Shirt className="w-4 h-4" />
-            <span>2. Tủ Đồ & Phối Áo</span>
+            <User className="w-3.5 h-3.5" />
+            <span>Người Mẫu 2D</span>
+          </button>
+          <button
+            onClick={() => setStudioLayoutMode('wardrobe_only')}
+            className={`flex-1 py-2 rounded-xl text-[11px] sm:text-xs font-bold flex items-center justify-center gap-1.5 transition-all active:scale-95 ${
+              studioLayoutMode === 'wardrobe_only'
+                ? 'bg-[#cba135] text-black shadow-glow-gold'
+                : 'text-stone-300 hover:text-white bg-white/5'
+            }`}
+          >
+            <Shirt className="w-3.5 h-3.5" />
+            <span>Tủ Đồ Rộng</span>
           </button>
         </div>
 
         {/* Studio Main Workspace: 2D Stage & Controls Side-by-Side */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 sm:gap-6 items-start">
-          {/* Left Column: 2D Model Canvas */}
-          <div className={`lg:col-span-5 h-[480px] sm:h-[580px] lg:h-[700px] lg:sticky lg:top-24 ${
-            mobileViewTab === 'model' ? 'block' : 'hidden lg:block'
+          {/* 2D Model Canvas: Sticky on Desktop, Adaptive on Mobile */}
+          <div className={`lg:col-span-5 lg:sticky lg:top-24 ${
+            studioLayoutMode === 'wardrobe_only'
+              ? 'hidden lg:block lg:h-[700px]'
+              : studioLayoutMode === 'fullscreen_model'
+              ? 'block h-[540px] sm:h-[620px] lg:h-[700px]'
+              : 'block lg:h-[700px]'
           }`}>
             <Avatar2DCanvas
               outfit={currentOutfit}
@@ -278,23 +296,28 @@ export function App() {
               onCameraViewChange={setCameraView}
               gender={gender}
               onGenderChange={setGender}
+              compactMode={studioLayoutMode === 'split'}
+              onToggleExpand={() => setStudioLayoutMode(studioLayoutMode === 'split' ? 'fullscreen_model' : 'split')}
+              isExpanded={studioLayoutMode === 'fullscreen_model'}
             />
 
-            {/* Quick button to switch to wardrobe on mobile */}
-            <div className="mt-3 lg:hidden flex justify-center">
-              <button
-                onClick={() => setMobileViewTab('wardrobe')}
-                className="w-full py-3 rounded-2xl bg-gradient-to-r from-[#cba135] to-[#e5a93b] text-black font-bold text-xs shadow-glow-gold flex items-center justify-center gap-2 active:scale-95"
-              >
-                <Shirt className="w-4 h-4" />
-                <span>Mở Tủ Đồ Để Thay Trang Phục Khác</span>
-              </button>
-            </div>
+            {/* Quick button in fullscreen mode on mobile to switch to wardrobe */}
+            {studioLayoutMode === 'fullscreen_model' && (
+              <div className="mt-3 lg:hidden flex justify-center">
+                <button
+                  onClick={() => setStudioLayoutMode('split')}
+                  className="w-full py-3 rounded-2xl bg-gradient-to-r from-[#cba135] to-[#e5a93b] text-black font-bold text-xs shadow-glow-gold flex items-center justify-center gap-2 active:scale-95"
+                >
+                  <Shirt className="w-4 h-4" />
+                  <span>Quay Lại Thử Đồ & Đổi Trang Phục</span>
+                </button>
+              </div>
+            )}
           </div>
 
           {/* Right Column: Mix & Match Fitting Room Controls */}
           <div className={`lg:col-span-7 ${
-            mobileViewTab === 'wardrobe' ? 'block' : 'hidden lg:block'
+            studioLayoutMode === 'fullscreen_model' ? 'hidden lg:block' : 'block'
           }`}>
             <FittingRoomControls
               outfit={currentOutfit}
@@ -331,11 +354,11 @@ export function App() {
           </div>
         </div>
 
-        {/* Floating Mini Preview Button on Mobile when in Wardrobe tab */}
-        {mobileViewTab === 'wardrobe' && (
+        {/* Floating Mini Preview Button on Mobile when in wardrobe_only mode */}
+        {studioLayoutMode === 'wardrobe_only' && (
           <button
-            onClick={() => setMobileViewTab('model')}
-            className="lg:hidden fixed bottom-6 right-4 z-40 px-3.5 py-2.5 rounded-full bg-gradient-to-r from-[#c02739] to-[#cba135] text-white font-bold text-xs shadow-2xl flex items-center gap-2 border border-white/20 animate-bounce active:scale-95"
+            onClick={() => setStudioLayoutMode('split')}
+            className="lg:hidden fixed bottom-20 right-4 z-40 px-3.5 py-2.5 rounded-full bg-gradient-to-r from-[#c02739] to-[#cba135] text-white font-bold text-xs shadow-2xl flex items-center gap-2 border border-white/20 animate-bounce active:scale-95"
           >
             <User className="w-4 h-4 text-amber-200" />
             <span>Xem Mẫu Mặc ({currentOutfit.mainTop.name.slice(0, 11)}...)</span>
@@ -375,7 +398,7 @@ export function App() {
       />
 
       {/* Footer */}
-      <footer className="mt-auto border-t border-white/10 bg-black/70 py-10 px-4 sm:px-6 lg:px-8 text-center text-xs text-stone-400">
+      <footer className="mt-auto border-t border-white/10 bg-black/70 py-10 px-4 sm:px-6 lg:px-8 text-center text-xs text-stone-400 pb-24 lg:pb-10">
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-2">
             <span className="text-lg">👘</span>
@@ -386,6 +409,49 @@ export function App() {
           <p>© 2026 Đề thi Audition. Thiết kế và phát triển với niềm tự hào văn hóa Việt Nam.</p>
         </div>
       </footer>
+
+      {/* FLOATING MOBILE BOTTOM NAVIGATION DOCK */}
+      {!(isCulturalModalOpen || isHarmonyModalOpen || isLookbookModalOpen || isCompareModalOpen) && (
+        <div className="lg:hidden fixed bottom-3 left-1/2 -translate-x-1/2 z-40 w-[92%] max-w-[380px] p-1.5 rounded-full bg-[#0d0f17]/90 backdrop-blur-2xl border border-[#cba135]/40 shadow-2xl flex items-center justify-around animate-fadeIn">
+          <button
+            onClick={() => handleNavigate('hero')}
+            className={`flex flex-col items-center py-1 px-2.5 rounded-full transition-all active:scale-90 ${
+              activeSection === 'hero' ? 'text-[#cba135] font-bold' : 'text-stone-400 hover:text-white'
+            }`}
+          >
+            <Home className="w-4 h-4" />
+            <span className="text-[10px] mt-0.5">Trang Chủ</span>
+          </button>
+
+          <button
+            onClick={() => handleNavigate('storytelling')}
+            className={`flex flex-col items-center py-1 px-2.5 rounded-full transition-all active:scale-90 ${
+              activeSection === 'storytelling' ? 'text-[#cba135] font-bold' : 'text-stone-400 hover:text-white'
+            }`}
+          >
+            <BookOpen className="w-4 h-4" />
+            <span className="text-[10px] mt-0.5">Di Sản</span>
+          </button>
+
+          <button
+            onClick={() => handleNavigate('studio')}
+            className={`flex flex-col items-center py-1 px-3 rounded-full transition-all active:scale-90 ${
+              activeSection === 'studio' ? 'bg-[#cba135] text-black font-bold shadow-glow-gold' : 'text-stone-400 hover:text-white'
+            }`}
+          >
+            <Shirt className="w-4 h-4" />
+            <span className="text-[10px] mt-0.5">Thử Đồ 2D</span>
+          </button>
+
+          <button
+            onClick={() => setIsLookbookModalOpen(true)}
+            className="flex flex-col items-center py-1 px-2.5 rounded-full text-stone-400 hover:text-white transition-all active:scale-90"
+          >
+            <Camera className="w-4 h-4 text-purple-400" />
+            <span className="text-[10px] mt-0.5">Tạp Chí</span>
+          </button>
+        </div>
+      )}
     </div>
   );
 }

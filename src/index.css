@@ -3,9 +3,17 @@
 @tailwind utilities;
 
 @layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+  }
+
   body {
     font-family: 'Be Vietnam Pro', sans-serif;
     overflow-x: hidden;
+    background-color: #0c0d12;
+    -webkit-overflow-scrolling: touch;
   }
 
   h1, h2, h3, .font-serif-royal {
@@ -20,8 +28,8 @@
 
 /* Custom scrollbars */
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 5px;
+  height: 5px;
 }
 
 ::-webkit-scrollbar-track {
@@ -39,24 +47,27 @@
 
 /* Glassmorphism helpers */
 .glass-panel {
-  background: rgba(18, 21, 31, 0.75);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  background: rgba(18, 21, 31, 0.78);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
   border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .glass-card {
-  background: rgba(26, 30, 46, 0.65);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  background: rgba(26, 30, 46, 0.68);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
   border: 1px solid rgba(203, 161, 53, 0.2);
+}
+
+.glass-card-hover {
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .glass-card-hover:hover {
   border-color: rgba(203, 161, 53, 0.6);
-  box-shadow: 0 0 20px rgba(203, 161, 53, 0.25);
-  transform: translateY(-2px);
-  transition: all 0.25s ease-in-out;
+  box-shadow: 0 8px 30px rgba(203, 161, 53, 0.2);
+  transform: translateY(-3px);
 }
 
 /* Gold gradient text */
@@ -86,12 +97,13 @@
     transform: translateY(0px) scale(1);
   }
   50% {
-    transform: translateY(-4px) scale(1.008);
+    transform: translateY(-5px) scale(1.01);
   }
 }
 
 .animate-gentle-breathe {
-  animation: gentleBreathe 3.8s ease-in-out infinite;
+  animation: gentleBreathe 3.5s ease-in-out infinite;
+  will-change: transform;
 }
 
 @keyframes silkWave {
@@ -99,16 +111,17 @@
     transform: skewX(0deg) scaleX(1);
   }
   25% {
-    transform: skewX(-1.5deg) scaleX(0.99);
+    transform: skewX(-2deg) scaleX(0.99);
   }
   75% {
-    transform: skewX(1.8deg) scaleX(1.01);
+    transform: skewX(2.2deg) scaleX(1.01);
   }
 }
 
 .animate-silk-wave {
   transform-origin: top center;
-  animation: silkWave 4.6s ease-in-out infinite;
+  animation: silkWave 4.2s ease-in-out infinite;
+  will-change: transform;
 }
 
 @keyframes petalFall {
@@ -123,101 +136,89 @@
     opacity: 0.9;
   }
   100% {
-    transform: translateY(640px) rotate(360deg) translateX(45px);
+    transform: translateY(680px) rotate(360deg) translateX(50px);
     opacity: 0;
   }
 }
 
 .animate-petal-fall {
   animation: petalFall linear infinite;
+  will-change: transform, opacity;
 }
 
-/* Stardust Shimmer Particles */
-@keyframes stardustShimmer {
+/* Shimmer Sweep Animation for Gold Buttons */
+@keyframes shimmer {
   0% {
-    transform: translateY(0) scale(0.6) rotate(0deg);
-    opacity: 0;
-  }
-  30% {
-    opacity: 0.95;
-    filter: drop-shadow(0 0 6px rgba(255, 215, 0, 0.9));
-  }
-  70% {
-    opacity: 0.85;
-    filter: drop-shadow(0 0 8px rgba(255, 235, 120, 1));
+    background-position: -200% 0;
   }
   100% {
-    transform: translateY(-480px) scale(1.1) rotate(180deg);
-    opacity: 0;
+    background-position: 200% 0;
   }
 }
 
-.animate-stardust {
-  animation: stardustShimmer linear infinite;
+.animate-shimmer {
+  background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.25) 50%, rgba(255,255,255,0) 100%);
+  background-size: 200% 100%;
+  animation: shimmer 3s infinite;
 }
 
-/* Amber Lantern Fireflies */
-@keyframes fireflyFloat {
-  0%, 100% {
-    transform: translate(0, 0) scale(0.8);
-    opacity: 0.2;
-    filter: drop-shadow(0 0 4px #f59e0b);
+/* Equip Pop Animation */
+@keyframes equipPop {
+  0% {
+    transform: scale(0.94);
   }
   50% {
-    transform: translate(25px, -35px) scale(1.25);
-    opacity: 0.95;
-    filter: drop-shadow(0 0 10px #f59e0b);
-  }
-}
-
-.animate-firefly {
-  animation: fireflyFloat ease-in-out infinite;
-}
-
-/* Dynamic Wind Speeds for Silk Cloth */
-.animate-silk-wave-calm {
-  transform-origin: top center;
-  animation: silkWave 6.5s ease-in-out infinite;
-}
-
-.animate-silk-wave-breeze {
-  transform-origin: top center;
-  animation: silkWave 4.2s ease-in-out infinite;
-}
-
-@keyframes silkWaveStrong {
-  0%, 100% {
-    transform: skewX(0deg) scaleX(1);
-  }
-  25% {
-    transform: skewX(-3.8deg) scaleX(0.97) translateY(-3px);
-  }
-  75% {
-    transform: skewX(4.2deg) scaleX(1.02) translateY(3px);
-  }
-}
-
-.animate-silk-wave-strong {
-  transform-origin: top center;
-  animation: silkWaveStrong 2.2s ease-in-out infinite;
-}
-
-/* Equip Aura Pulse */
-@keyframes equipAuraPulse {
-  0% {
-    transform: scale(0.92);
-    opacity: 0.9;
-    filter: drop-shadow(0 0 25px rgba(203, 161, 53, 0.9));
+    transform: scale(1.05);
   }
   100% {
-    transform: scale(1.06);
-    opacity: 0;
-    filter: drop-shadow(0 0 0px rgba(203, 161, 53, 0));
+    transform: scale(1);
   }
 }
 
-.animate-equip-aura {
-  animation: equipAuraPulse 0.85s ease-out forwards;
+.animate-equip-pop {
+  animation: equipPop 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  will-change: transform;
 }
 
+/* Floating Badges */
+@keyframes floatBadge {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
 
+.animate-float-badge {
+  animation: floatBadge 4s ease-in-out infinite;
+}
+
+/* Fade In animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.25s ease-out forwards;
+}
+
+.animate-fadeInUp {
+  animation: fadeInUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}

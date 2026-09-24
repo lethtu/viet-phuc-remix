@@ -128,7 +128,7 @@ export const StorytellingSection: React.FC<StorytellingSectionProps> = ({ onGoTo
             onClick={onGoToStudio}
             className="flex items-center gap-2 px-6 py-2.5 rounded-xl bg-gradient-to-r from-[#c02739] to-[#9b1b30] hover:from-[#d93044] hover:to-[#b32035] text-white font-semibold text-sm shadow-glow-crimson transition-all hover:scale-105"
           >
-            <span>Phối Đồ Ngay Tại Studio 3D</span>
+            <span>Phối Đồ Ngay Tại Studio 2D</span>
             <ArrowRight className="w-4 h-4" />
           </button>
         </div>
