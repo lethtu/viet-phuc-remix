@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Navbar } from './components/Navbar';
 import { HeroSection } from './components/HeroSection';
 import { StorytellingSection } from './components/StorytellingSection';
-import { ThreeCanvas } from './components/ThreeCanvas';
+import { Avatar2DCanvas } from './components/Avatar2DCanvas';
 import { FittingRoomControls } from './components/FittingRoomControls';
 import { CulturalGuardModal } from './components/CulturalGuardModal';
 import { ColorHarmonyModal } from './components/ColorHarmonyModal';
@@ -31,11 +31,15 @@ import {
   Info,
   CheckCircle2,
   Calendar,
+  User,
+  Shirt,
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 
 export function App() {
   const [activeSection, setActiveSection] = useState('hero');
+  const [mobileViewTab, setMobileViewTab] = useState<'model' | 'wardrobe'>('model');
+  const [gender, setGender] = useState<'male' | 'female'>('male');
 
   // Default initial outfit: Iconic Gen Z Vietnamese Heritage outfit
   const [currentOutfit, setCurrentOutfit] = useState<CurrentOutfit>({
@@ -153,47 +157,47 @@ export function App() {
       {/* Storytelling Heritage Journey Section */}
       <StorytellingSection onGoToStudio={() => handleNavigate('studio')} />
 
-      {/* 3D Interactive Fitting Room Studio */}
-      <section id="studio" className="relative py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full">
+      {/* 2D Interactive Fitting Room Studio */}
+      <section id="studio" className="relative py-12 sm:py-16 px-3 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full">
         {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-10">
+        <div className="text-center max-w-3xl mx-auto mb-8 sm:mb-10">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#cba135]/15 border border-[#cba135]/30 text-[#cba135] text-xs font-semibold uppercase tracking-wider mb-3">
             <Sparkles className="w-3.5 h-3.5" />
-            <span>Phòng Thử Đồ Tương Tác 3D</span>
+            <span>Phòng Thử Đồ Tương Tác 2D</span>
           </div>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold font-serif-royal text-gold-gradient tracking-tight mb-3">
+          <h2 className="text-2xl sm:text-4xl lg:text-5xl font-bold font-serif-royal text-gold-gradient tracking-tight mb-2 sm:mb-3">
             Việt Phục Remix Studio
           </h2>
-          <p className="text-stone-300 text-xs sm:text-sm max-w-2xl mx-auto">
+          <p className="text-stone-300 text-xs sm:text-sm max-w-2xl mx-auto px-2">
             Tự do thử nghiệm các bộ trang phục truyền thống, phối ghép phụ kiện Gen Z thời thượng, theo dõi phản hồi văn hóa và xuất tạp chí thời trang.
           </p>
         </div>
 
         {/* Live Status Bar (Scores & Warnings Overview) */}
-        <div className="mb-6 p-4 rounded-2xl glass-card border border-white/10 flex flex-wrap items-center justify-between gap-4">
+        <div className="mb-5 sm:mb-6 p-3 sm:p-4 rounded-2xl glass-card border border-white/10 flex flex-wrap items-center justify-between gap-3 sm:gap-4">
           {/* Cultural Respect Score */}
           <div
             onClick={() => setIsCulturalModalOpen(true)}
-            className="flex items-center gap-3 cursor-pointer group"
+            className="flex items-center gap-2.5 sm:gap-3 cursor-pointer group"
           >
-            <div className={`p-2.5 rounded-xl transition-all group-hover:scale-105 ${
+            <div className={`p-2 sm:p-2.5 rounded-xl transition-all group-hover:scale-105 ${
               culturalResult.score >= 85 ? 'bg-emerald-500/20 text-emerald-400' :
               culturalResult.score >= 60 ? 'bg-amber-500/20 text-amber-400' : 'bg-red-500/20 text-red-400'
             }`}>
               {culturalResult.status === 'passed' ? (
-                <ShieldCheck className="w-6 h-6" />
+                <ShieldCheck className="w-5 sm:w-6 h-5 sm:h-6" />
               ) : (
-                <AlertTriangle className="w-6 h-6 animate-pulse" />
+                <AlertTriangle className="w-5 sm:w-6 h-5 sm:h-6 animate-pulse" />
               )}
             </div>
             <div>
-              <div className="text-xs text-stone-400 flex items-center gap-1.5">
+              <div className="text-[11px] sm:text-xs text-stone-400 flex items-center gap-1.5">
                 <span>Điểm Văn Hóa:</span>
-                <span className="text-[11px] underline text-[#cba135] group-hover:text-white">Xem radar</span>
+                <span className="text-[10px] sm:text-[11px] underline text-[#cba135] group-hover:text-white">Xem radar</span>
               </div>
-              <div className="text-sm sm:text-base font-bold text-white flex items-center gap-2">
+              <div className="text-xs sm:text-base font-bold text-white flex items-center gap-1.5 sm:gap-2">
                 <span>{culturalResult.score}/100</span>
-                <span className="text-xs font-normal text-stone-300 line-clamp-1">
+                <span className="text-[11px] sm:text-xs font-normal text-stone-300 line-clamp-1">
                   • {culturalResult.title}
                 </span>
               </div>
@@ -203,19 +207,19 @@ export function App() {
           {/* Color Harmony Score */}
           <div
             onClick={() => setIsHarmonyModalOpen(true)}
-            className="flex items-center gap-3 cursor-pointer group"
+            className="flex items-center gap-2.5 sm:gap-3 cursor-pointer group"
           >
-            <div className="p-2.5 rounded-xl bg-amber-500/20 text-amber-400 transition-all group-hover:scale-105">
-              <Palette className="w-6 h-6" />
+            <div className="p-2 sm:p-2.5 rounded-xl bg-amber-500/20 text-amber-400 transition-all group-hover:scale-105">
+              <Palette className="w-5 sm:w-6 h-5 sm:h-6" />
             </div>
             <div>
-              <div className="text-xs text-stone-400 flex items-center gap-1.5">
+              <div className="text-[11px] sm:text-xs text-stone-400 flex items-center gap-1.5">
                 <span>Ngũ Hành & Bảng Màu:</span>
-                <span className="text-[11px] underline text-[#cba135] group-hover:text-white">Chi tiết</span>
+                <span className="text-[10px] sm:text-[11px] underline text-[#cba135] group-hover:text-white">Chi tiết</span>
               </div>
-              <div className="text-sm sm:text-base font-bold text-white flex items-center gap-2">
+              <div className="text-xs sm:text-base font-bold text-white flex items-center gap-1.5 sm:gap-2">
                 <span>{harmonyResult.score}/100</span>
-                <span className="text-xs font-normal text-amber-200">
+                <span className="text-[11px] sm:text-xs font-normal text-amber-200">
                   • {harmonyResult.paletteType}
                 </span>
               </div>
@@ -226,7 +230,7 @@ export function App() {
           {currentOutfit.vatStyle === 'left' && (
             <button
               onClick={handleFixTaboo}
-              className="px-4 py-2 rounded-xl bg-red-600 hover:bg-red-500 text-white font-bold text-xs flex items-center gap-1.5 animate-pulse shadow-glow-crimson"
+              className="w-full sm:w-auto px-3.5 py-2 rounded-xl bg-red-600 hover:bg-red-500 text-white font-bold text-xs flex items-center justify-center gap-1.5 animate-pulse shadow-glow-crimson"
             >
               <AlertTriangle className="w-4 h-4" />
               <span>Khắc Phục Lỗi Cài Vạt Trái (Tả Nhậm) Ngay</span>
@@ -234,21 +238,64 @@ export function App() {
           )}
         </div>
 
-        {/* Studio Main Workspace: 3D Stage & Controls Side-by-Side */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-          {/* Left Column: 3D Model Canvas (5 Cols on large screens) */}
-          <div className="lg:col-span-5 h-[540px] lg:h-[700px] sticky top-24">
-            <ThreeCanvas
+        {/* Mobile / Tablet Segmented Controller (< lg) */}
+        <div className="lg:hidden mb-4 p-1.5 rounded-2xl glass-panel border border-[#cba135]/35 flex items-center justify-center gap-2 sticky top-16 sm:top-20 z-30 shadow-2xl backdrop-blur-xl">
+          <button
+            onClick={() => setMobileViewTab('model')}
+            className={`flex-1 py-2.5 rounded-xl text-xs font-bold flex items-center justify-center gap-2 transition-all active:scale-95 ${
+              mobileViewTab === 'model'
+                ? 'bg-[#cba135] text-black shadow-glow-gold'
+                : 'text-stone-300 hover:text-white bg-white/5'
+            }`}
+          >
+            <User className="w-4 h-4" />
+            <span>1. Người Mẫu 2D</span>
+          </button>
+          <button
+            onClick={() => setMobileViewTab('wardrobe')}
+            className={`flex-1 py-2.5 rounded-xl text-xs font-bold flex items-center justify-center gap-2 transition-all active:scale-95 ${
+              mobileViewTab === 'wardrobe'
+                ? 'bg-[#cba135] text-black shadow-glow-gold'
+                : 'text-stone-300 hover:text-white bg-white/5'
+            }`}
+          >
+            <Shirt className="w-4 h-4" />
+            <span>2. Tủ Đồ & Phối Áo</span>
+          </button>
+        </div>
+
+        {/* Studio Main Workspace: 2D Stage & Controls Side-by-Side */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 sm:gap-6 items-start">
+          {/* Left Column: 2D Model Canvas */}
+          <div className={`lg:col-span-5 h-[480px] sm:h-[580px] lg:h-[700px] lg:sticky lg:top-24 ${
+            mobileViewTab === 'model' ? 'block' : 'hidden lg:block'
+          }`}>
+            <Avatar2DCanvas
               outfit={currentOutfit}
               lightingPreset={lightingPreset}
               onLightingChange={setLightingPreset}
               cameraView={cameraView}
               onCameraViewChange={setCameraView}
+              gender={gender}
+              onGenderChange={setGender}
             />
+
+            {/* Quick button to switch to wardrobe on mobile */}
+            <div className="mt-3 lg:hidden flex justify-center">
+              <button
+                onClick={() => setMobileViewTab('wardrobe')}
+                className="w-full py-3 rounded-2xl bg-gradient-to-r from-[#cba135] to-[#e5a93b] text-black font-bold text-xs shadow-glow-gold flex items-center justify-center gap-2 active:scale-95"
+              >
+                <Shirt className="w-4 h-4" />
+                <span>Mở Tủ Đồ Để Thay Trang Phục Khác</span>
+              </button>
+            </div>
           </div>
 
-          {/* Right Column: Mix & Match Fitting Room Controls (7 Cols) */}
-          <div className="lg:col-span-7">
+          {/* Right Column: Mix & Match Fitting Room Controls */}
+          <div className={`lg:col-span-7 ${
+            mobileViewTab === 'wardrobe' ? 'block' : 'hidden lg:block'
+          }`}>
             <FittingRoomControls
               outfit={currentOutfit}
               onChangeOutfit={setCurrentOutfit}
@@ -264,11 +311,11 @@ export function App() {
             />
 
             {/* Cultural Information Card for Selected Garment */}
-            <div className="mt-6 p-5 rounded-2xl glass-card border border-[#cba135]/30">
-              <div className="flex items-center justify-between mb-2">
+            <div className="mt-5 sm:mt-6 p-4 sm:p-5 rounded-2xl glass-card border border-[#cba135]/30">
+              <div className="flex flex-wrap items-center justify-between gap-2 mb-2">
                 <span className="text-xs uppercase tracking-wider text-[#cba135] font-bold flex items-center gap-1.5">
                   <BookOpen className="w-3.5 h-3.5" />
-                  <span>Nguồn Gốc & Ý Nghĩa Lịch Sử: {currentOutfit.mainTop.name}</span>
+                  <span>Nguồn Gốc & Ý Nghĩa: {currentOutfit.mainTop.name}</span>
                 </span>
                 <span className="text-xs text-amber-200/80 font-medium">
                   {currentOutfit.mainTop.era}
@@ -283,6 +330,17 @@ export function App() {
             </div>
           </div>
         </div>
+
+        {/* Floating Mini Preview Button on Mobile when in Wardrobe tab */}
+        {mobileViewTab === 'wardrobe' && (
+          <button
+            onClick={() => setMobileViewTab('model')}
+            className="lg:hidden fixed bottom-6 right-4 z-40 px-3.5 py-2.5 rounded-full bg-gradient-to-r from-[#c02739] to-[#cba135] text-white font-bold text-xs shadow-2xl flex items-center gap-2 border border-white/20 animate-bounce active:scale-95"
+          >
+            <User className="w-4 h-4 text-amber-200" />
+            <span>Xem Mẫu Mặc ({currentOutfit.mainTop.name.slice(0, 11)}...)</span>
+          </button>
+        )}
       </section>
 
       {/* Modals */}
