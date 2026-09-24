@@ -1,0 +1,223 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    font-family: 'Be Vietnam Pro', sans-serif;
+    overflow-x: hidden;
+  }
+
+  h1, h2, h3, .font-serif-royal {
+    font-family: 'Playfair Display', serif;
+  }
+
+  .font-cinzel {
+    font-family: 'Playfair Display', 'Cormorant Garamond', 'Be Vietnam Pro', serif;
+    letter-spacing: 0.05em;
+  }
+}
+
+/* Custom scrollbars */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0d0f17;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #2a3142;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #cba135;
+}
+
+/* Glassmorphism helpers */
+.glass-panel {
+  background: rgba(18, 21, 31, 0.75);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.glass-card {
+  background: rgba(26, 30, 46, 0.65);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(203, 161, 53, 0.2);
+}
+
+.glass-card-hover:hover {
+  border-color: rgba(203, 161, 53, 0.6);
+  box-shadow: 0 0 20px rgba(203, 161, 53, 0.25);
+  transform: translateY(-2px);
+  transition: all 0.25s ease-in-out;
+}
+
+/* Gold gradient text */
+.text-gold-gradient {
+  background: linear-gradient(135deg, #f7d779 0%, #cba135 50%, #997316 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Crimson gradient text */
+.text-crimson-gradient {
+  background: linear-gradient(135deg, #ff5e7e 0%, #c02739 50%, #801020 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Cyberpunk gradient text */
+.text-cyber-gradient {
+  background: linear-gradient(135deg, #00f2fe 0%, #8a2be2 50%, #ff2a85 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Character & Garment Organic Animations */
+@keyframes gentleBreathe {
+  0%, 100% {
+    transform: translateY(0px) scale(1);
+  }
+  50% {
+    transform: translateY(-4px) scale(1.008);
+  }
+}
+
+.animate-gentle-breathe {
+  animation: gentleBreathe 3.8s ease-in-out infinite;
+}
+
+@keyframes silkWave {
+  0%, 100% {
+    transform: skewX(0deg) scaleX(1);
+  }
+  25% {
+    transform: skewX(-1.5deg) scaleX(0.99);
+  }
+  75% {
+    transform: skewX(1.8deg) scaleX(1.01);
+  }
+}
+
+.animate-silk-wave {
+  transform-origin: top center;
+  animation: silkWave 4.6s ease-in-out infinite;
+}
+
+@keyframes petalFall {
+  0% {
+    transform: translateY(0) rotate(0deg) translateX(0);
+    opacity: 0;
+  }
+  15% {
+    opacity: 0.9;
+  }
+  85% {
+    opacity: 0.9;
+  }
+  100% {
+    transform: translateY(640px) rotate(360deg) translateX(45px);
+    opacity: 0;
+  }
+}
+
+.animate-petal-fall {
+  animation: petalFall linear infinite;
+}
+
+/* Stardust Shimmer Particles */
+@keyframes stardustShimmer {
+  0% {
+    transform: translateY(0) scale(0.6) rotate(0deg);
+    opacity: 0;
+  }
+  30% {
+    opacity: 0.95;
+    filter: drop-shadow(0 0 6px rgba(255, 215, 0, 0.9));
+  }
+  70% {
+    opacity: 0.85;
+    filter: drop-shadow(0 0 8px rgba(255, 235, 120, 1));
+  }
+  100% {
+    transform: translateY(-480px) scale(1.1) rotate(180deg);
+    opacity: 0;
+  }
+}
+
+.animate-stardust {
+  animation: stardustShimmer linear infinite;
+}
+
+/* Amber Lantern Fireflies */
+@keyframes fireflyFloat {
+  0%, 100% {
+    transform: translate(0, 0) scale(0.8);
+    opacity: 0.2;
+    filter: drop-shadow(0 0 4px #f59e0b);
+  }
+  50% {
+    transform: translate(25px, -35px) scale(1.25);
+    opacity: 0.95;
+    filter: drop-shadow(0 0 10px #f59e0b);
+  }
+}
+
+.animate-firefly {
+  animation: fireflyFloat ease-in-out infinite;
+}
+
+/* Dynamic Wind Speeds for Silk Cloth */
+.animate-silk-wave-calm {
+  transform-origin: top center;
+  animation: silkWave 6.5s ease-in-out infinite;
+}
+
+.animate-silk-wave-breeze {
+  transform-origin: top center;
+  animation: silkWave 4.2s ease-in-out infinite;
+}
+
+@keyframes silkWaveStrong {
+  0%, 100% {
+    transform: skewX(0deg) scaleX(1);
+  }
+  25% {
+    transform: skewX(-3.8deg) scaleX(0.97) translateY(-3px);
+  }
+  75% {
+    transform: skewX(4.2deg) scaleX(1.02) translateY(3px);
+  }
+}
+
+.animate-silk-wave-strong {
+  transform-origin: top center;
+  animation: silkWaveStrong 2.2s ease-in-out infinite;
+}
+
+/* Equip Aura Pulse */
+@keyframes equipAuraPulse {
+  0% {
+    transform: scale(0.92);
+    opacity: 0.9;
+    filter: drop-shadow(0 0 25px rgba(203, 161, 53, 0.9));
+  }
+  100% {
+    transform: scale(1.06);
+    opacity: 0;
+    filter: drop-shadow(0 0 0px rgba(203, 161, 53, 0));
+  }
+}
+
+.animate-equip-aura {
+  animation: equipAuraPulse 0.85s ease-out forwards;
+}
+
+
